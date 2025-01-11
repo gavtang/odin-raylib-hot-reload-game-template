@@ -1,0 +1,2 @@
+[keys.normal]
+Cmd-s = [":w", ":sh ./build_hot_reload.sh"]
