@@ -5,13 +5,13 @@ changes.
 
 package main
 
+import "core:c/libc"
 import "core:dynlib"
 import "core:fmt"
-import "core:c/libc"
-import "core:os"
-import "core:os/os2"
 import "core:log"
 import "core:mem"
+import "core:os"
+import "core:os/os2"
 import "core:path/filepath"
 
 when ODIN_OS == .Windows {
@@ -52,7 +52,7 @@ Game_API :: struct {
 	force_reload: proc() -> bool,
 	force_restart: proc() -> bool,
 	modification_time: os.File_Time,
-	api_version: int,
+	api_version:       int,
 }
 
 load_game_api :: proc(api_version: int) -> (api: Game_API, ok: bool) {
@@ -90,8 +90,10 @@ unload_game_api :: proc(api: ^Game_API) {
 		}
 	}
 
-	if os.remove(fmt.tprintf(GAME_DLL_DIR + "game_{0}" + DLL_EXT, api.api_version)) != nil {
-		fmt.printfln("Failed to remove {0}game_{1}" + DLL_EXT + " copy", GAME_DLL_DIR, api.api_version)
+	game_dll_name := fmt.tprintf(GAME_DLL_DIR + "game_{0}" + DLL_EXT, api.api_version)
+
+	if os.remove(game_dll_name) != nil {
+		fmt.printfln("Failed to remove game_{0}" + DLL_EXT + " copy", api.api_version)
 	}
 }
 
@@ -149,7 +151,8 @@ main :: proc() {
 			new_game_api, new_game_api_ok := load_game_api(game_api_version)
 
 			if new_game_api_ok {
-				force_restart = force_restart || game_api.memory_size() != new_game_api.memory_size()
+				force_restart =
+					force_restart || game_api.memory_size() != new_game_api.memory_size()
 
 				if !force_restart {
 					// This does the normal hot reload
@@ -227,3 +230,4 @@ NvOptimusEnablement: u32 = 1
 
 @(export)
 AmdPowerXpressRequestHighPerformance: i32 = 1
+

@@ -1,2 +1,5 @@
 [keys.normal]
 Cmd-s = [":w", ":sh ./build_hot_reload.sh"]
+[keys.normal."\\"]
+h = [":w", ":sh ./build_hot_reload.sh"]
+w = [":w", ":sh ./build_web.sh"]

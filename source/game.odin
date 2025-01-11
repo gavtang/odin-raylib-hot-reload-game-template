@@ -34,7 +34,7 @@ import rl "vendor:raylib"
 PIXEL_WINDOW_HEIGHT :: 180
 
 Game_Memory :: struct {
-	player_pos: rl.Vector2,
+	player_pos:     rl.Vector2,
 	player_texture: rl.Texture,
 	some_number: int,
 	run: bool,
@@ -54,9 +54,7 @@ game_camera :: proc() -> rl.Camera2D {
 }
 
 ui_camera :: proc() -> rl.Camera2D {
-	return {
-		zoom = f32(rl.GetScreenHeight())/PIXEL_WINDOW_HEIGHT,
-	}
+	return {zoom = f32(rl.GetScreenHeight()) / PIXEL_WINDOW_HEIGHT}
 }
 
 update :: proc() {
@@ -195,3 +193,4 @@ game_force_restart :: proc() -> bool {
 game_parent_window_size_changed :: proc(w, h: int) {
 	rl.SetWindowSize(i32(w), i32(h))
 }
+
